@@ -1,11 +1,12 @@
 ## Git Clone
 ```bash
-git clone https://github.com/yumaeda/laravel-5.5.git laravel-5.5
+git clone https://github.com/yumaeda/laravel-admin.git laravel-admin
 ```
 
 ## Launch Docker Containers
 ```bash
-cd laravel-5.5
+cd laravel-admin
+docker run --rm -v $(pwd):/app composer/composer install
 docker-compose up -d --build
 ```
 
