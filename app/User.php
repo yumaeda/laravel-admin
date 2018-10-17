@@ -1,12 +1,23 @@
 <?php
-
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Permissions\HasPermissionsTrait;
 
+/**
+ * Class User
+ *
+ * @category    App
+ * @author      Yukitaka_Maeda<yumaeda@gmail.com>
+ * @version     GIT: $Id$
+ * @link        %%your_link%%
+ * @see         %%your_see%%
+ * @since       Class available since Release 1.0.0
+ */
 class User extends Authenticatable
 {
+    use HasPermissionsTrait;
     use Notifiable;
 
     /**
