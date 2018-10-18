@@ -21,7 +21,7 @@ class PermissionTableSeeder extends Seeder
      */
     public function run()
     {
-        $dev_role = Role::where('slug','developer')->first();
+        $dev_role = Role::where('slug', 'developer')->first();
         $manager_role = Role::where('slug', 'manager')->first();
 
         $createTasks = new Permission();

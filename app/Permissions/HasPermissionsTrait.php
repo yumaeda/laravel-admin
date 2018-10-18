@@ -1,4 +1,15 @@
 <?php
+/**
+ *
+ *
+ * @author      Yukitaka_Maeda<yumaeda@gmail.com>
+ * @copyright   laravel-admin
+ * @license     %%license%%
+ * @version     GIT: $Id$
+ * @link        %%your_link%%
+ * @see         %%your_see%%
+ * @since       Class available since Release 2018/10/18 12:15
+ */
 namespace App\Permissions;
 
 use App\Permission;
@@ -18,35 +29,124 @@ use App\Role;
 trait HasPermissionsTrait
 {
     /**
+     * Get all the related roles
+     *
+     * @access public
+     * @return mixed
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * Get all the related permissions
+     *
+     * @access public
+     * @return mixed
+     */
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
+
+    /**
+     * Give the specified permissions
+     *
+     * @access public
+     * @param mixed ...$permissions
+     * @return $this
+     */
+    public function givePermissions(...$permissions): self
+    {
+        $target = $this->getTargetPermissions($permissions);
+        if ($target !== null) {
+            $this->permissions()->saveMany($target);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Deprives the specified permission
+     *
+     * @access public
+     * @param mixed ...$permissions
+     * @return $this
+     */
+    public function deprivePermissions(...$permissions): self
+    {
+        $target = $this->getTargetPermissions($permissions);
+        if ($target !== null) {
+            $this->permissions()->detach($target);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Refreshes with the specified permissions
+     *
+     * @param mixed ...$permissions
+     * @return $this
+     */
+    public function refreshPermissions(...$permissions): self
+    {
+        $this->permissions()->detach();
+
+        return $this->givePermissions($permissions);
+    }
+
+    /**
+     * Gets an boolean value whether to have the specified permission or not
+     *
+     * @access public
+     * @param \App\Permission $permission
+     * @return bool
+     */
+    public function hasPermission(Permission $permission): bool
+    {
+        $has_role_permissions = $this->hasPermissionThroughRole($permission);
+        $permission_count = $this->permissions()->where('slug', $permission->slug)->count();
+
+        return ($has_role_permissions || (bool) $permission_count);
+    }
+
+    /**
+     * Delete the specified permissions
+     *
+     * @access public
+     * @param mixed ...$permissions
+     * @return $this
+     */
+    public function deletePermissions(...$permissions): self
+    {
+        $target = $this->getTargetPermissions($permissions);
+        $this->permissions()->detach($target);
+
+        return $this;
+    }
+
+    /**
+     * Get all the specified permissions
+     *
+     * @access protected
      * @param array $permissions
      * @return mixed
      */
-    protected function getAllPermissions(array $permissions)
+    protected function getTargetPermissions(array $permissions)
     {
         return Permission::whereIn('slug', $permissions)->get();
     }
 
     /**
-     * @return mixed
-     */
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class, 'user_roles');
-    }
-
-    /**
-     * @return mixed
-     */
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class, 'user_permissions');
-    }
-
-    /**
+     * Gets an boolean value whether to have one of the specified roles or not
+     *
+     * @access protected
      * @param mixed ...$roles
      * @return bool
      */
-    public function hasRole(...$roles)
+    protected function hasRoles(...$roles): bool
     {
         foreach ($roles as $role) {
             if ($this->roles()->contains('slug', $role)) {
@@ -58,10 +158,13 @@ trait HasPermissionsTrait
     }
 
     /**
-     * @param $permission
+     * Gets an boolean value whether to have the specified permission or not
+     *
+     * @access protected
+     * @param \App\Permission $permission
      * @return bool
      */
-    public function hasPermissionThroughRole($permission): bool
+    protected function hasPermissionThroughRole(Permission $permission): bool
     {
         foreach ($permission->roles as $role) {
             if ($this->roles()->contains($role)) {
@@ -70,71 +173,5 @@ trait HasPermissionsTrait
         }
 
         return false;
-    }
-
-    /**
-     * @param mixed ...$permissions
-     * @return $this
-     */
-    public function withdrawPermissionsTo(...$permissions): self
-    {
-        $permissions = $this->getAllPermissions($permissions);
-        $this->permissions()->detach($permissions);
-
-        return $this;
-    }
-
-    /**
-     * @param mixed ...$permissions
-     * @return \App\Permissions\HasPermissionsTrait
-     */
-    public function refreshPermissions(...$permissions) {
-        $this->permissions()->detach();
-
-        return $this->givePermissionsTo($permissions);
-    }
-
-    /**
-     * @param $permission
-     * @return bool
-     */
-    public function hasPermissionTo($permission): bool
-    {
-        return $this->hasPermissionThroughRole($permission) || $this->hasPermission($permission);
-    }
-
-    /**
-     * @param mixed ...$permissions
-     * @return $this
-     */
-    public function givePermissionsTo(...$permissions): self
-    {
-        $permissions = $this->getAllPermissions($permissions);
-        if ($permissions !== null) {
-            $this->permissions()->saveMany($permissions);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param mixed ...$permissions
-     * @return $this
-     */
-    public function deletePermissions(...$permissions): self
-    {
-        $permissions = $this->getAllPermissions($permissions);
-        $this->permissions()->detach($permissions);
-
-        return $this;
-    }
-
-    /**
-     * @param $permission
-     * @return bool
-     */
-    protected function hasPermission($permission): bool
-    {
-       return (bool) $this->permissions->where('slug', $permission->slug)->count();
     }
 }

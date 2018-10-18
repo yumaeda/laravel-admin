@@ -15,7 +15,21 @@ docker-compose up -d --build
 cp .env.example .env
 docker-compose exec app php artisan key:generate
 docker-compose exec app php artisan optimize
+docker-compose exec app php artisan migrate --seed
+```
+
+## Migrate Commands
+```bash
+docker-compose exec app php artisan migrate:reset
+docker-compose exec app php artisan migrate:refresh
+docker-compose exec app php artisan db:seed
+```
+
+## Reset DB
+```bash
+docker-compose down
+docker volume rm laravel-admin_dbdata
 ```
 
 ## Reference
-https://medium.com/@shakyShane/laravel-docker-part-1-setup-for-development-e3daaefaf3c
+https://thewebtier.com/laravel/understanding-roles-permissions-laravel/

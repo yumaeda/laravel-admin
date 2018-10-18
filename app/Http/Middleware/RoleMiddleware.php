@@ -27,6 +27,7 @@ class RoleMiddleware
     /**
      * Handle an incoming request.
      *
+     * @access public
      * @param $request
      * @param \Closure $next
      * @param $role
@@ -35,7 +36,7 @@ class RoleMiddleware
      */
     public function handle($request, Closure $next, $role, $permission = null)
     {
-        if ($request->user() && !$request->user()->hasRole($role)) {
+        if (empty($request->user()) || !$request->user()->hasRole($role)) {
             abort(self::ERROR_CODE_404);
         }
 

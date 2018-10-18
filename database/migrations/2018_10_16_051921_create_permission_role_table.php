@@ -15,7 +15,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 /**
- * Class CreateUsersTable
+ * Class CreatePermissionRoleTable
  *
  * @author      Yukitaka_Maeda<yumaeda@gmail.com>
  * @version     GIT: $Id$
@@ -23,37 +23,37 @@ use Illuminate\Database\Migrations\Migration;
  * @see         %%your_see%%
  * @since       Class available since Release 1.0.0
  */
-class CreateUsersTable extends Migration
+class CreatePermissionRoleTable extends Migration
 {
     /**
      * Table name
      *
      * @var string
      */
-    const TABLE_NAME = 'users';
+    const TABLE_NAME = 'permission_role';
 
     /**
      * Run the migrations.
      *
-     * @access public
      * @return void
      */
     public function up()
     {
         Schema::create(self::TABLE_NAME, function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+            $table->integer('permission_id')->unsigned();
+            $table->integer('role_id')->unsigned();
+
+            // Set the foreign key constraints in order to delete the corresponding records
+            // if a role or permission is deleted.
+            $table->foreign('permission_id')->references('id')->on('permissions')->onDelete('cascade');
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+            $table->primary(['permission_id', 'role_id']);
         });
     }
 
     /**
      * Reverse the migrations.
      *
-     * @access public
      * @return void
      */
     public function down()

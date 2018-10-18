@@ -1,4 +1,15 @@
 <?php
+/**
+ *
+ *
+ * @author      Yukitaka_Maeda<yumaeda@gmail.com>
+ * @copyright   laravel-admin
+ * @license     %%license%%
+ * @version     GIT: $Id$
+ * @link        %%your_link%%
+ * @see         %%your_see%%
+ * @since       Class available since Release 2018/10/18 12:15
+ */
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
