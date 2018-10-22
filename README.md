@@ -25,6 +25,12 @@ docker-compose exec app php artisan migrate:refresh
 docker-compose exec app php artisan db:seed
 ```
 
+## Clear Cache Commands
+```bash
+docker-compose exec app php artisan view:clear
+docker-compose exec app php artisan cache:clear
+```
+
 ## Reset DB
 ```bash
 docker-compose down

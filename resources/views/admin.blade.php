@@ -64,6 +64,9 @@
         <div class="title m-b-md">
             Laravel Admin
         </div>
+        @role('admin')
+        <h2>Admin Only Contents</h2>
+        @endrole
         <div class="links">
             <a href="https://github.com/yumaeda/laravel-admin">GitHub</a>
         </div>

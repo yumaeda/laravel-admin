@@ -146,10 +146,10 @@ trait HasPermissionsTrait
      * @param mixed ...$roles
      * @return bool
      */
-    protected function hasRoles(...$roles): bool
+    public function hasRoles(...$roles): bool
     {
         foreach ($roles as $role) {
-            if ($this->roles()->contains('slug', $role)) {
+            if ($this->roles->contains('slug', $role)) {
                 return true;
             }
         }
@@ -167,7 +167,7 @@ trait HasPermissionsTrait
     protected function hasPermissionThroughRole(Permission $permission): bool
     {
         foreach ($permission->roles as $role) {
-            if ($this->roles()->contains($role)) {
+            if ($this->roles->contains($role)) {
                 return true;
             }
         }

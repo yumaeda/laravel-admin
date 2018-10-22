@@ -1,7 +1,19 @@
 <?php
+/**
+ *
+ *
+ * @author      Yukitaka_Maeda<yumaeda@gmail.com>
+ * @copyright   laravel-admin
+ * @license     %%license%%
+ * @version     GIT: $Id$
+ * @link        %%your_link%%
+ * @see         %%your_see%%
+ * @since       Class available since Release 2018/10/18 12:15
+ */
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 
 /**
  * Class RoleMiddleware
@@ -27,16 +39,15 @@ class RoleMiddleware
     /**
      * Handle an incoming request.
      *
-     * @access public
-     * @param $request
+     * @param \Illuminate\Http\Request
      * @param \Closure $next
-     * @param $role
+     * @param string $role
      * @param null $permission
      * @return mixed
      */
-    public function handle($request, Closure $next, $role, $permission = null)
+    public function handle(Request $request, Closure $next, string $role, $permission = null)
     {
-        if (empty($request->user()) || !$request->user()->hasRole($role)) {
+        if (empty($request->user()) || !$request->user()->hasRoles($role)) {
             abort(self::ERROR_CODE_404);
         }
 
