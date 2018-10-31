@@ -1,7 +1,15 @@
 FROM php:7.2-fpm
 
-RUN apt-get update && apt-get install -y mysql-client \
-    libmagickwand-dev --no-install-recommends \
-    && pecl install imagick \
-    && docker-php-ext-enable imagick \
-    && docker-php-ext-install pdo_mysql
+RUN DEBIAN_FRONTEND=noninteractive \
+    && apt-get update \
+    && apt-get install -y mysql-client unzip git curl
+
+RUN git clone https://github.com/nikic/php-ast.git \
+    && cd php-ast \
+    && phpize \
+    && ./configure \
+    && make install \
+    && echo 'extension=ast.so' > /usr/local/etc/php/php.ini \
+    && cd .. && rm -rf php-ast
+
+RUN docker-php-ext-install pdo_mysql

@@ -17,9 +17,7 @@ docker-compose exec app php artisan key:generate
 docker-compose exec app php artisan optimize
 docker-compose exec app php artisan migrate --seed
 ```
-
-## Migrate Commands
-```bash
+## Migrate Commands ```bash
 docker-compose exec app php artisan migrate:reset
 docker-compose exec app php artisan migrate:refresh
 docker-compose exec app php artisan db:seed
@@ -35,6 +33,11 @@ docker-compose exec app php artisan cache:clear
 ```bash
 docker-compose down
 docker volume rm laravel-admin_dbdata
+```
+
+## Execute Phan
+```bash
+docker-compose exec app ./vendor/bin/phan
 ```
 
 ## Reference
