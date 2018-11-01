@@ -40,6 +40,11 @@ docker volume rm laravel-admin_dbdata
 docker-compose exec app ./vendor/bin/phan
 ```
 
+## Execute PHPMD
+```bash
+docker-compose exec app ./vendor/bin/phpmd ./app text ./phpmd.xml
+```
+
 ## PHP-CS-Fixer
 ドライランで修正箇所の確認をする
 ```bash
