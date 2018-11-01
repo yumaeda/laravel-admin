@@ -10,6 +10,7 @@
  * @see         %%your_see%%
  * @since       Class available since Release 2018/10/18 12:15
  */
+
 namespace App\Permissions;
 
 use App\Permission;
@@ -107,7 +108,7 @@ trait HasPermissionsTrait
     public function hasPermission(Permission $permission): bool
     {
         $has_role_permissions = $this->hasPermissionThroughRole($permission);
-        $permission_count = $this->permissions()->where('slug', $permission->slug)->count();
+        $permission_count     = $this->permissions()->where('slug', $permission->slug)->count();
 
         return ($has_role_permissions || (bool) $permission_count);
     }

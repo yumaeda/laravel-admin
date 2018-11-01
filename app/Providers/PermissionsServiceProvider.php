@@ -10,6 +10,7 @@
  * @see         %%your_see%%
  * @since       Class available since Release 2018/10/18 12:15
  */
+
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -35,11 +36,11 @@ class PermissionsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \Blade::directive('role', function ($role){
+        \Blade::directive('role', function ($role) {
             return "<?php if(auth()->check() && auth()->user()->hasRoles($role)) { ?>";
         });
-        \Blade::directive('endrole', function (){
-            return "<?php } ?>";
+        \Blade::directive('endrole', function () {
+            return '<?php } ?>';
         });
     }
 
@@ -51,6 +52,5 @@ class PermissionsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
     }
 }

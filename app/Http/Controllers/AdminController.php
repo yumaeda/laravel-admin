@@ -10,6 +10,7 @@
  * @see         %%your_see%%
  * @since       Class available since Release 2018/10/17 17:05
  */
+
 namespace App\Http\Controllers;
 
 /**

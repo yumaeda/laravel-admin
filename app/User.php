@@ -10,6 +10,7 @@
  * @see         %%your_see%%
  * @since       Class available since Release 2018/10/18 12:15
  */
+
 namespace App;
 
 use Illuminate\Notifications\Notifiable;

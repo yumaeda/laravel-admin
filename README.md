@@ -40,5 +40,21 @@ docker volume rm laravel-admin_dbdata
 docker-compose exec app ./vendor/bin/phan
 ```
 
+## PHP-CS-Fixer
+ドライランで修正箇所の確認をする
+```bash
+docker-compose exec app ./vendor/bin/php-cs-fixer fix --dry-run --diff --diff-format udiff ./app
+```
+
+コードの修正を行う
+```bash
+docker-compose exec app ./vendor/bin/php-cs-fixer fix
+```
+
+ルールの詳細を確認する
+```bash
+docker-compose exec app ./vendor/bin/php-cs-fixer describe array_syntax
+```
+
 ## Reference
 https://thewebtier.com/laravel/understanding-roles-permissions-laravel/
